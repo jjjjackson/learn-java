@@ -1,0 +1,16 @@
+# Java Professional
+- [ ] Types
+- [ ] Array, Condition, Loops
+- [ ] Class Design
+- [ ] Error Handling 
+- [ ] OOP - Inheritance
+- [ ] OOP - Interface
+- [ ] Lambda
+- [ ] IO
+- [ ] Concurrency / Multi-thread
+- [ ] Open Module 
+- [ ] Annotation style
+- [ ] DB Connection
+- [ ] Security
+- [ ] Generic
+- [ ] Cloud deployment
