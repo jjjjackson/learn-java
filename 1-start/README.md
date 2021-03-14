@@ -48,6 +48,8 @@ https://blog.csdn.net/kongjiea/article/details/45365753
 - constant  →　MIN_SIZE
 - method    →　playCSharp
 
+https://www.tw511.com/20/206/8054.html
+
 **考題**
 ```
 Q: 哪種命名方法Compile不會過
