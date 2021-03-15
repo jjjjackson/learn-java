@@ -39,8 +39,15 @@ BTW StringBuilder.capability 的 allocation 很神奇，可研究一下
 byte ➡️ Byte, int ➡️ `Integer` (考)
 還有一個 BigDecimal
 
-```
+```java
 var e = Integer.valueOf(123) // int 或 string
+```
+
+可以 `auto-unboxing` 和 `auto-boxing`
+```java
+List<Double> ld = new ArrayList<>();
+ld.add(3.1416);
+double pi = ld.get(0);
 ```
 
 # LocalDatTime
