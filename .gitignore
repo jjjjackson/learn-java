@@ -24,3 +24,6 @@ hs_err_pid*
 
 # mac file system
 **/.DS_Store
+*.csv
+*.txt
+*.temp
