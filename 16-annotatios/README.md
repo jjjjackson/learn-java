@@ -1,6 +1,6 @@
-# 16 - Annotations
+# 0z1 819 Lesson 16 Annotations
 
-## 什麼事 Annotation
+## 什麼是 Annotation
 - From Metadata
 - 提供 Programme 的資訊
   - SOURCE 
@@ -24,7 +24,7 @@ method 是不會直接被 Generate Annotation 的
 [https://qiita.com/opengl-8080/items/1cc996d9e8bb5c811567](https://qiita.com/opengl-8080/items/1cc996d9e8bb5c811567)
 
 
-# Deprecated Annotation
+## Deprecated Annotation
 - 給一個警告
 - 例如說下個版本會被 Removed，就會用這個
   - `＠Deprecated(since="11", forRemoval = true)`
@@ -39,3 +39,5 @@ ignore warning
 
 ## SafeVaragrs
 想要 Restrict Type 的時候
+
+
