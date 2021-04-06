@@ -37,4 +37,43 @@ public class Some implements App<String >{
 ```
 
 
+## Hierarchy
+Array 沒有 Generic
+```java
+Product[] product = new Food[10];
+product[0] = new Drink(); // 這個會有 Run Time Error: java.lang.ArrayStoreException
+// 但是 compiler 不會告訴你
+```
+☝ 這個叫 `variant`
+
+但 collection 是 `invariant` 所以他會告訴你
+```java
+List<Product> products = new ArrayList<Food>(); // Compiler 會報錯
+```
+
+但不會 Check Raw Type
+```java
+List<Food> foods = new ArrayList<Food>();
+List values = foods; // 這個時候 Type 就丟失了
+```
+
+
+## wildcard generics
+`<?>` unknown type
+
+ex: `List<?> listOfUnknownType` 👈 這個會是個 `readonly` list
+
+或 `List<? extends ParentType>`
+
+### Lower Bound Wildcard
+`List<? super Type>` 會變成 Writable 👉 **contra-variant**
+
+
+## Summary 
+- Normal Generic 是 `invariant` 👉 read-write generic
+- <? super LowerBoundType> 是 `contravariant` 👉 writable generic
+- <? extends UpperBoundType> 是 `covariant` 👉 read-only generic
+- 但盡量 Avoid Raw type
+
+
 
