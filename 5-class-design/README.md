@@ -97,6 +97,7 @@ public class Box {
 - 是個 Special type of class（考）
 - fix set of instances（考）
 - 直接就是 public static 和 final
+- Enum 都有 method `.values()` ex: `Rating.values()[stars]`
 
 ```java 
 public enum Condition {
