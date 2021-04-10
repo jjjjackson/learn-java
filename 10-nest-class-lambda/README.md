@@ -1,113 +1,122 @@
-# 0z1 819 Lesson 10 Net Class
+# 0z1 819 Lesson 10 Nested Class
 
-## 筆記
+# Nested Class
+- 一個 Class 裡面有其他的 Class
+  - 為了 Constrain the context
+  - 為了 不讓其他地方 reuse code
 
-## Class
-- 如果沒有 Extend 其他 Class，Default 會 Extend `Object (java.lang.Object)` （考）
-  - java.lang.Object 提供 `toString` `equals` `hascode` `clone` 之類的 Basic Function
-- 可以一直繼承下去
-- 只能有一個 Parent (考)
+有 3 種
+1. static nested class => with static context
+2. member inner class  => with instance context
+3. local inner  class  
+   1. in method class => 超少見
+   2. Anonymous Inner Class => inside method (後來就被 Lambda 取代了)
 
-```java
-public class Product() {}
-// 事實上是
-public class Product extends Object() {}
-// 繼續繼承下去
-public class Food extend Product() {}
 
-var p = new Product();
-String s = p.toString(); // 這個是繼承 java.lang.Object 來的
-```
-
-## Memory 
-Memory 會 Create parent Object
-```java
-var p = new Product();
-// [ Object | Product ]
-var f = new Food();
-// [ Object | Product | Food ]
-var d = new Drink();
-// [ Object | Product | Drink ]
-//   < --------------------- Method 可用 ✅
-//   --------------------- > Method 不一定可以用而且不推 👎 
-```
+# Static Nest Class
+- 只能用 Static Variable 和 Method
+- shared with all instance
+- 可以用 OuterClass 和 Private Variable 和 Method
+- inner Class 的 `this` 是指 inner class  而不是 Outer Class
 
 ```java
-Food x1 = new Food
-Object x2 = (Object) x1     // ✅
-Product x3 = (Product) x2   // 👎 可能會過，但是不推
-```
-
-
-## 確認 Type 的方法（考）
-```java
-if(p instanceof Food ) {
-    //...
-}
-```
-
-## Shadowing Station（考）
-- Parent 的 Variable 是 Public，但 Child 有同名的 Variable
-
-```java
-public class Product { public discount }
-public class Food extends Product { 
-    public discount 
-    Food() {
-        super()
-        this.discount  // 自己的
-        super.discount // Parent 的
+public class OuterClass { 
+    static class InnerClass() {
+        ...
     }
 }
 ```
 
-## Constructor
-- 有 Extends 但沒寫 Constructor，【而且 Parent 沒有 Param 的話】會自動加 `super`
+# Member Inner Class 
+- 要求 Class 被一定的**順序**創建
+- InnerClass 有 不能單獨出現的需求
 
-手動
 ```java
-public class Product { Product(String name) }
-public class Food { 
-    Food(String name) {
-        super(name); // 必須在第一行 (考)
+public class Outer {
+    class Inner { 
+        private Product product; // 這個可以直接被 Outer 看到
     }
 }
 ```
 
-## Override Function
-- `@Override` 是可以選擇加或不加，加了可以幫助 Compile 檢查錯誤，可以避免 Typo 之類的（屬於一種 Annotation）（考）
-- 不可以把 public 改 private
-- 只能擴張不能收縮 private -> protect -> public 👍
-- 
-    
-```java
-@Override
-public int Discount() {}
-```
+## Local Inner Class
+- 非常少
+- 可能有 超複雜的 Algo 但不希望被 Reuse
+- Outer Method 的 Param 只能是 Final
 
-**！！！記得**
-```java
-Food f = new Food();
-Product p = (Product) f;
-p.getXXX() // 會用 Food 的 getXXX 而不是 Public 的
-```
-
-
-## Abstract
-
-- 表示一個Concept 👉 Generic
-- 為了 extend 其他的 concrete subclass
-- 不能 New 出結果
-- 如果是 Abstract 的方法一定要 Override (考)
-- 如果是 Abstract 就不會去看 Abstract 的 Method，會直接找 concrete subclass (要試試看)
-
-## Final Class
-- Ex String Math 等等
-- `Final Class` 不能被繼承，不能被 Override，執行速度比一般 Class 快
-- 很少用
-[https://blog.csdn.net/xv1356027897/article/details/79515712](https://blog.csdn.net/xv1356027897/article/details/79515712)
-
-
-
+## Anonymous Inner Class
+- 最常見的
+- 只是為了 Override 一個 Method 或 Extend 一個 Method
   
+```java
+Order order = new Order() { // 事實上是 Extend 了一個 Order Class 但沒有 Class Name
+    @Override
+    public BigDecimal getDiscount() {
+
+    }
+}
+```
+
+# Lambda Expression 
+- 可以減少 Anonymous Inner Class 的 Code
+
+```java 
+Collections.sort(products, new Comparator<Product>() {
+    public int compare(Product p1, product p2) { // Lambda 不用看 Parameter 的 Type 也不用看
+        return p1.getName().compareTo(p2.getName);
+    }
+})
+// 會變成
+Collections.sort(products, (p1,p2) -> p1.getPrice().compareTo(p2.getPrice()));
+```
+
+#### Lambda expression
+```java
+Consumer<String> lambda = x -> System.out.print(x); // 沒加 () {} 👌
+Consumer<String> lambda = x -> { System.out.print(x); }; // 沒加 () 加 {} 👌 記得最後面要 ;
+Consumer<String> lambda = x -> { 
+    x = x + "Chocolate";
+    System.out.print(x);
+}; // 👌
+
+// 有 Return 的
+Supplier<Double> lambda = () -> Math.PI;
+Supplier<Double> lambda = () -> { return Math.PI; };
+
+// 可以標註 var 或 type **但如果要加就兩個都要加而且要一樣**
+Comparator<Product> sortText = (String s1, String s2) -> s1.compareTo(s2);
+Comparator<Product> sortText = (String s1, var s2) -> s1.compareTo(s2); // ❌
+
+// 可以加 final， **但要加 var 或 Type**
+Comparator<Product> sortText = (final String s1, String s2) -> s1.compareTo(s2);
+```
+
+### Predefine 和 Reuse
+```java
+Comparator<Product> sortText = (s1, s2) -> s1.compareTo(s2);
+Collection.sort(list,sortText);
+```
+
+### Use Method Reference 
+可以直接用 Class 或 Object 的 Method 當 Lambda
+- `Class::staticMethod`     要是 `static` 的
+- `object::instanceMethod`
+- `Class::instanceMethod`   EX: `Collections.sort(List<String>, String::compareToIgnoreCase);`
+- `Class::new`              用 constructor
+
+<img src="./images/build-in%20functional%20interface.png" alt="build-in functional interface"/>
+<img src="./images/consumer-prefix.png" alt="build-in functional interface"/>
+
+
+#### Quiz
+<img src="./images/quiz-3.png" alt="quiz-3"/>
+A. Function Type 一定要有 Return
+B. Substring 是 Static Function
+C. (String x, y) 👉 不能 implicit 和 宣告混在一起
+D. Consumer 不用 Return
+
+## Good reference
+- [Java8 新特性教程](https://www.exception.site/java8)
+
+
 
